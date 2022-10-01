@@ -128,9 +128,9 @@ if __name__ == "__main__":
         '_db'     : CONN_ADRGS['database'], 
         '_usr'    : CONN_ADRGS['user'], 
         '_psswrd' : CONN_ADRGS['password'],
-        '_tbs'    : ['users_tb', 'admins_tb', 'accs_tb'],
+        '_tbs'    : ['groups_tb'],
         '_fl'     : 'tb.json',
-        '_ctbs'   : [CR_USERS_TB, CR_ADMINS_TB, CR_ACCS_TB]
+        '_ctbs'   : [CR_GROUPS_TB]
     }
 
     for _dvar in _dvars: 
