@@ -13,6 +13,7 @@ from telebot.types import Message, ReplyKeyboardRemove as rmvKb
 #------------------------\ project modules /-------------------------#
 from back  import *
 from front import *
+from front.vars import BOT_KB
 from setup import *
 #\------------------------------------------------------------------/#
 
@@ -29,14 +30,7 @@ def start(msg : Message) -> None:
     """### Bot begin actions """
     _id = str(msg.chat.id)
 
-    if _id in get_ids('admins_tb').keys():
-        init_admin(bot, _id)
-        
-    elif _id not in get_ids('users_tb').keys():
-        init_user(bot, _id)
-    
-    else:
-        start_user(bot, _id)
+    send_msg(bot, _id, 'Бот для управления рассылкой сообщений.', set_kb(BOT_KB))
 #\------------------------------------------------------------------/#
 
 
@@ -67,7 +61,8 @@ def callback_inline(call):
     msg_id : int = call.message.message_id
 
     if data.isdigit():
-        send_call_resp(bot, _id, data, msg_id)
+        #send_call_resp(bot, _id, data, msg_id)
+        pass
 
 #\------------------------------------------------------------------/#
 

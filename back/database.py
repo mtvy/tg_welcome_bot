@@ -122,7 +122,7 @@ if __name__ == "__main__":
         '_write'  : print,
         '_p_con'  : {'database' : 'postgres' , 
                      'user'     : 'postgres' , 
-                     'password' : 'postgres' ,
+                     'password' : '111' ,
                      'host'     : 'localhost',
                      'port'     : '5432'     },
         '_db'     : CONN_ADRGS['database'], 
