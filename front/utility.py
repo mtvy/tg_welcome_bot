@@ -8,7 +8,7 @@
 
 #/-----------------------/ installed libs  \------------------------\#
 from datetime      import datetime
-from typing        import Callable, Dict, List
+from typing        import Callable, Dict, List, Tuple
 from telebot       import TeleBot
 from telebot.types import KeyboardButton       as KbButton, \
                           ReplyKeyboardRemove  as rmvKb    , \
@@ -47,11 +47,18 @@ def set_inline_kb(btns : Dict[str, str]) -> None:
 
 #\------------------------------------------------------------------/#
 @logging()
-def get_ids(tb : str) -> Dict[str, None]:
-    ids = {}
+def get_ids(tb='groups_tb') -> Tuple[int]:
+    return (it[3] for it in get_db(tb))
+#\------------------------------------------------------------------/#
+
+
+#\------------------------------------------------------------------/#
+@logging()
+def get_info(_id : str | int, tb='groups_tb') -> Tuple[str]:
     for it in get_db(tb):
-        ids[it[1]] = None
-    return ids
+        if it[3] == _id:
+            return (it[1], it[2], it[3])
+    return ()
 #\------------------------------------------------------------------/#
 
 
