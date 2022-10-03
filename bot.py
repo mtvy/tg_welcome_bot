@@ -117,5 +117,7 @@ def callback_inline(call : CallbackQuery):
 
 #\==================================================================/#
 if __name__ == "__main__":
-    bot.polling(none_stop=True)
+    proc = init_proc(handle_mems, [])
+    start_proc(proc)
+    bot.polling(none_stop=True, allowed_updates="chat_member")
 #\==================================================================/#

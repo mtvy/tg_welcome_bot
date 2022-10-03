@@ -19,9 +19,14 @@ def add_group(bot : TeleBot, _id : str | int) -> None:
 
 
     @logging()
+    def __get_len_mems(gid : str | int):
+        return bot.get_chat_members_count(gid)
+
+
+    @logging()
     def __add_group(msg : Message, bot : TeleBot, _id : str | int, gid : str) -> None:
         name = __get_group(gid)
-        if (name and insert_db(f"INSERT INTO groups_tb (name, msg, tid) VALUES ('{name}', '{msg.text}', '{gid}')", 'groups_tb')):
+        if (name and insert_db(f"INSERT INTO groups_tb (name, msg, tid, mems) VALUES ('{name}', '{msg.text}', '{gid}', '{__get_len_mems(gid)}')", 'groups_tb')):
             send_msg(bot, _id, f'Добавлена группа {gid} с текстом:\n{msg.text}', set_kb(BOT_KB))
         else:
             send_msg(bot, _id, f'Не добавлена группа {gid} с текстом:\n{msg.text}', set_kb(BOT_KB))
