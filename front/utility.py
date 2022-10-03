@@ -10,7 +10,7 @@
 from datetime      import datetime
 from typing        import Callable, Dict, List, Tuple
 from telebot       import TeleBot
-from telebot.types import KeyboardButton       as KbButton, \
+from telebot.types import Message, KeyboardButton as KbButton, \
                           ReplyKeyboardRemove  as rmvKb    , \
                           ReplyKeyboardMarkup  as replyKb   , \
                           InlineKeyboardMarkup as inlineKb   , \
@@ -79,6 +79,13 @@ def del_msg(bot : TeleBot, sender_id : int, _msg_id : int) -> None:
 
 #\------------------------------------------------------------------/#
 @logging()
+def edit_msg(bot : TeleBot, sender_id : int, _msg_id : int, txt : str, mrkp) -> None:
+    bot.edit_message_text(sender_id, _msg_id, txt, reply_markup=mrkp); return True
+#\------------------------------------------------------------------/#
+
+
+#\------------------------------------------------------------------/#
+@logging()
 def wait_msg(bot : TeleBot, _id : str | int, func : Callable, txt : str, mrkp : replyKb | inlineKb | rmvKb=None, args=[], **_) -> None:
     """
     Replacement for register_next_step_handler.
@@ -111,7 +118,7 @@ def wait_msg(bot : TeleBot, _id : str | int, func : Callable, txt : str, mrkp : 
 
 #\------------------------------------------------------------------/#
 @logging()
-def send_msg(bot : TeleBot, _id : str | int, txt : str, mrkp : replyKb | inlineKb | rmvKb=None, *args, **_) -> None:
+def send_msg(bot : TeleBot, _id : str | int, txt : str, mrkp : replyKb | inlineKb | rmvKb=None, *args, **_) -> Message:
     """
     Replacement for send_message.
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -138,5 +145,5 @@ def send_msg(bot : TeleBot, _id : str | int, txt : str, mrkp : replyKb | inlineK
         send_msg(bot, _id, txt)
     ```
     """
-    bot.send_message(_id, txt, reply_markup=mrkp)
+    return bot.send_message(_id, txt, reply_markup=mrkp)
 #\------------------------------------------------------------------/#

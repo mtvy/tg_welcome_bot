@@ -12,6 +12,7 @@ from front.utility import set_kb, \
                           get_info, \
                           get_date, \
                           del_msg, \
+                          edit_msg, \
                           wait_msg, \
                           send_msg, \
                           set_inline_kb

@@ -50,13 +50,24 @@ def new_group_user(msg : Message):
     global users_sub
 
     _id  = str(msg.chat.id)
-    u_id = str(msg.from_user.id)
 
     group : Tuple = get_info(_id)
 
     if group:
-        send_msg(bot, _id, group[1], set_inline_kb({'Подтвердить' : u_id}))
-        users_sub[_id] = {u_id : False}
+        u_id = str(msg.from_user.id)
+        
+        txt    : str = group[1] 
+        f_name : str = msg.from_user.first_name
+        l_name : str = msg.from_user.last_name
+        u_name : str = msg.from_user.username
+
+        if '@user' in txt:
+            txt = txt.replace('@user', f_name if f_name else l_name \
+                    if l_name else u_name \
+                        if u_name else '')
+        
+        msg = send_msg(bot, _id, txt, set_inline_kb({'Подтвердить' : u_id}))
+        users_sub[_id] = {u_id : [False, msg.message_id, False]}
 #\------------------------------------------------------------------/#
 
 
@@ -75,7 +86,7 @@ def input_keyboard(msg : Message) -> None:
     if _id in ADMINS and txt in BOT_FUNC.keys():
         BOT_FUNC[txt](bot, _id)
     elif _id in users_sub.keys() and \
-            u_id in users_sub[_id] and not users_sub[_id][u_id]:
+            u_id in users_sub[_id].keys() and not users_sub[_id][u_id][0]:
         del_msg(bot, _id, msg.message_id)
 #\------------------------------------------------------------------/#
 
@@ -96,12 +107,11 @@ def callback_inline(call : CallbackQuery):
     msg_id : int = call.message.message_id
 
     if _id in users_sub.keys() and \
-            u_id in users_sub[_id] and not users_sub[_id][u_id]:
-        users_sub[_id][u_id] = True
-        del_msg(bot, _id, msg_id)
-        
-
-
+            u_id in users_sub[_id].keys() and not users_sub[_id][u_id][0]:
+        users_sub[_id][u_id][0] = True
+        users_sub[_id][u_id][2] = True
+        if del_msg(bot, _id, users_sub[_id][u_id][1]):
+            users_sub[_id][u_id][1] = None
 #\------------------------------------------------------------------/#
 
 
