@@ -54,7 +54,7 @@ def get_ids(tb='groups_tb') -> Tuple[int]:
 
 #\------------------------------------------------------------------/#
 @logging()
-def get_info(_id : str | int, tb='groups_tb') -> Tuple[str]:
+def get_info(_id : str, tb='groups_tb') -> Tuple[str]:
     for it in get_db(tb):
         if it[3] == _id:
             return (it[1], it[2], it[3])
@@ -73,13 +73,13 @@ def get_date() -> str:
 #\------------------------------------------------------------------/#
 @logging()
 def del_msg(bot : TeleBot, sender_id : int, _msg_id : int) -> None:
-    bot.delete_message(sender_id, _msg_id)
+    bot.delete_message(sender_id, _msg_id); return True
 #\------------------------------------------------------------------/#
 
 
 #\------------------------------------------------------------------/#
 @logging()
-def wait_msg(bot : TeleBot, _id : str, func : Callable, txt : str, mrkp : replyKb | inlineKb | rmvKb=None, args=[], **_) -> None:
+def wait_msg(bot : TeleBot, _id : str | int, func : Callable, txt : str, mrkp : replyKb | inlineKb | rmvKb=None, args=[], **_) -> None:
     """
     Replacement for register_next_step_handler.
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -111,7 +111,7 @@ def wait_msg(bot : TeleBot, _id : str, func : Callable, txt : str, mrkp : replyK
 
 #\------------------------------------------------------------------/#
 @logging()
-def send_msg(bot : TeleBot, _id : str, txt : str, mrkp : replyKb | inlineKb | rmvKb=None, *args, **_) -> None:
+def send_msg(bot : TeleBot, _id : str | int, txt : str, mrkp : replyKb | inlineKb | rmvKb=None, *args, **_) -> None:
     """
     Replacement for send_message.
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

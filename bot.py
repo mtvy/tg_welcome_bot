@@ -7,9 +7,9 @@
 #\==================================================================/#
 
 #/-----------------------/ installed libs  \------------------------\#
-from typing        import Any, Callable, Dict, Tuple
+from typing        import Tuple
 from telebot       import TeleBot
-from telebot.types import Message, ReplyKeyboardRemove as rmvKb
+from telebot.types import Message, CallbackQuery, ReplyKeyboardRemove as rmvKb
 #------------------------\ project modules /-------------------------#
 from back  import *
 from front import *
@@ -22,6 +22,7 @@ from setup import *
 bot = TeleBot(TOKEN)
 #\------------------------------------------------------------------/#
 
+ADMINS = ['281321076', '923118950']
 
 BOT_FUNC = {'Добавить'      : add_group,
             'Редактировать' : edit_group,
@@ -35,24 +36,27 @@ BOT_FUNC = {'Добавить'      : add_group,
 def start(msg : Message) -> None:
     """### Bot begin actions """
     _id = str(msg.chat.id)
-    txt = 'Бот для управления рассылкой сообщений.'
-    send_msg(bot, _id, txt, set_kb(BOT_KB))
+    if _id in ADMINS:
+        send_msg(bot, _id, 'Бот для управления рассылкой сообщений.', set_kb(BOT_KB))
+    else:
+        send_msg(bot, _id, 'Нет доступа', rmvKb())
 #\------------------------------------------------------------------/#
 
+users_sub = {}
 
 #\------------------------------------------------------------------/#
-GROUP_ID = -843425184
-
 @bot.message_handler(content_types=["new_chat_members"])
 def new_group_user(msg : Message):
+    global users_sub
 
-    _id = str(msg.chat.id)
-    u_id = msg.from_user.id
+    _id  = str(msg.chat.id)
+    u_id = str(msg.from_user.id)
+
     group : Tuple = get_info(_id)
 
     if group:
-        send_msg(bot, _id, group[2], set_inline_kb({'Подтвердить' : u_id}))
-        bot.ban_chat_sender_chat(_id, u_id)
+        send_msg(bot, _id, group[1], set_inline_kb({'Подтвердить' : u_id}))
+        users_sub[_id] = {u_id : False}
 #\------------------------------------------------------------------/#
 
 
@@ -60,22 +64,42 @@ def new_group_user(msg : Message):
 @bot.message_handler(content_types=['text'])
 @logging()
 def input_keyboard(msg : Message) -> None:
+    global users_sub
+    
 
-    _id = str(msg.chat.id)
+    _id  = str(msg.chat.id)
+    u_id = str(msg.from_user.id)
+    
     txt : str = msg.text
 
-    if txt in BOT_FUNC.keys():
+    if _id in ADMINS and txt in BOT_FUNC.keys():
         BOT_FUNC[txt](bot, _id)
+    elif _id in users_sub.keys() and \
+            u_id in users_sub[_id] and not users_sub[_id][u_id]:
+        del_msg(bot, _id, msg.message_id)
 #\------------------------------------------------------------------/#
 
 
 #\------------------------------------------------------------------/#
 @bot.callback_query_handler(func=lambda call: True)
 @logging()
-def callback_inline(call):
+def callback_inline(call : CallbackQuery):
+    global users_sub
+
+
+    _id  = str(call.message.chat.id)
+    u_id = str(call.from_user.id)
+
     data   : str = call.data
-    _id    : int = call.message.chat.id
+    l_name : str = call.from_user.first_name
+    f_name : str = call.from_user.first_name
     msg_id : int = call.message.message_id
+
+    if _id in users_sub.keys() and \
+            u_id in users_sub[_id] and not users_sub[_id][u_id]:
+        users_sub[_id][u_id] = True
+        del_msg(bot, _id, msg_id)
+        
 
 
 #\------------------------------------------------------------------/#
