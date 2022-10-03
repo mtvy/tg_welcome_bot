@@ -71,7 +71,7 @@ def handle_mems() -> None:
                 elif l_len > p_len:
                     update_db(f"UPDATE groups_tb SET mems='{p_len}' WHERE tid='{grp[3]}'", 'groups_tb')
         except:
-            exc = True
+            exc = f'{traceback.format_exc()}'
 
 
     bot = TeleBot(TOKEN)
@@ -83,5 +83,5 @@ def handle_mems() -> None:
         sleep(2)
 
     if exc:
-        send_msg(bot, 281321076, 'Ошибка мониторинга!')
+        send_msg(bot, 281321076, exc)
 #\------------------------------------------------------------------/#
