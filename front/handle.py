@@ -80,7 +80,7 @@ def handle_mems() -> None:
 
     bot = TeleBot(TOKEN)
 
-    set_delay(1).minutes.do(_send_req, bot)
+    set_delay(20).seconds.do(_send_req, bot)
         
     while not exc:
         proc_run()
