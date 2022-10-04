@@ -61,15 +61,19 @@ def handle_mems() -> None:
 
         try:
             for grp in get_db('groups_tb'):
-                l_len = int(grp[4])
-                p_len = bot.get_chat_member_count(grp[3])
-                if l_len < p_len:
-                    if len(grp[3]) > 13:
+                if len(grp[3]) > 13:
+                    l_len = int(grp[4])
+                    try:
+                        p_len = bot.get_chat_member_count(grp[3])
+                    except:
+                        p_len = l_len
+                        send_msg(bot, 281321076, f'{traceback.format_exc()}')
+                    if l_len < p_len:
                         proc = init_proc(timer_msg, [grp[3], grp[2]])
                         start_proc(proc)
-                    update_db(f"UPDATE groups_tb SET mems='{p_len}' WHERE tid='{grp[3]}'", 'groups_tb')
-                elif l_len > p_len:
-                    update_db(f"UPDATE groups_tb SET mems='{p_len}' WHERE tid='{grp[3]}'", 'groups_tb')
+                        update_db(f"UPDATE groups_tb SET mems='{p_len}' WHERE tid='{grp[3]}'", 'groups_tb')
+                    elif l_len > p_len:
+                        update_db(f"UPDATE groups_tb SET mems='{p_len}' WHERE tid='{grp[3]}'", 'groups_tb')
         except:
             exc = f'{traceback.format_exc()}'
 
