@@ -66,6 +66,7 @@ def handle_mems() -> None:
                     try:
                         p_len = bot.get_chat_member_count(grp[3])
                     except:
+                        p_len = l_len
                         send_msg(bot, 281321076, 'get_chat_member_count')
                         #p_len = l_len
                         #sleep(5)
