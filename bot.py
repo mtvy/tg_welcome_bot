@@ -15,11 +15,16 @@ from back  import *
 from front import *
 from front.vars import BOT_KB
 from setup import *
+
+import exclog, os
+
+from dotenv import load_dotenv
+load_dotenv('./setup/.env')
 #\------------------------------------------------------------------/#
 
 
 #\------------------------------------------------------------------/#
-bot = TeleBot(TOKEN)
+bot = TeleBot(os.getenv('TOKEN'))
 #\------------------------------------------------------------------/#
 
 ADMINS = ['281321076', '923118950']
@@ -29,10 +34,9 @@ BOT_FUNC = {'Добавить'      : add_group,
             'Удалить'       : del_group, 
             'Показать'      : show_group}
 
-
 #\------------------------------------------------------------------/#
 @bot.message_handler(commands=['start'])
-@logging()
+@exclog.logging()
 def start(msg : Message) -> None:
     """### Bot begin actions """
     _id = str(msg.chat.id)
@@ -73,11 +77,10 @@ def new_group_user(msg : Message):
 
 #\------------------------------------------------------------------/#
 @bot.message_handler(content_types=['text'])
-@logging()
+@exclog.logging()
 def input_keyboard(msg : Message) -> None:
     global users_sub
     
-
     _id  = str(msg.chat.id)
     u_id = str(msg.from_user.id)
     
@@ -93,18 +96,12 @@ def input_keyboard(msg : Message) -> None:
 
 #\------------------------------------------------------------------/#
 @bot.callback_query_handler(func=lambda call: True)
-@logging()
+@exclog.logging()
 def callback_inline(call : CallbackQuery):
     global users_sub
 
-
     _id  = str(call.message.chat.id)
     u_id = str(call.from_user.id)
-
-    data   : str = call.data
-    l_name : str = call.from_user.first_name
-    f_name : str = call.from_user.first_name
-    msg_id : int = call.message.message_id
 
     if _id in users_sub.keys() and \
             u_id in users_sub[_id].keys() and not users_sub[_id][u_id][0]:

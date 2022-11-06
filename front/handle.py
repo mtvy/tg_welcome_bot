@@ -7,11 +7,10 @@
 #\==================================================================/#
 
 #/-----------------------------/ Libs \-----------------------------\#
-import traceback
-from back.database import get_db, update_db
-from back.utility  import logging
-from setup.config import TOKEN
-from front.utility import del_msg, send_msg
+import traceback, exclog
+
+from back.database   import get_db, update_db
+from front.utility   import del_msg, send_msg
 from time            import sleep
 from telebot         import TeleBot
 from typing          import Callable
@@ -22,17 +21,17 @@ from schedule        import run_pending as proc_run
 
 
 #\------------------------------------------------------------------/#
-@logging()
+@exclog.logging()
 def init_proc(_func : Callable, _args) -> Process:
     return Process(target=_func, args=_args)
 
 
-@logging()
+@exclog.logging()
 def start_proc(proc : Process) -> Process:
     proc.start()
     return proc
 
-@logging()
+@exclog.logging()
 def kill_proc(proc : Process) -> Process:
     proc.kill()
     return proc
@@ -50,6 +49,11 @@ def timer_msg(_id : str | int, txt : str) -> None:
         pass
 #\------------------------------------------------------------------/#
 
+import os
+from dotenv import load_dotenv
+load_dotenv('./setup/.env')
+
+TOKEN = os.environ.get('TOKEN')
 
 #\------------------------------------------------------------------/#
 exc = False

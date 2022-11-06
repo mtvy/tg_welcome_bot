@@ -3,7 +3,7 @@ name: Server-Setup
 on:
   push:
     branches:
-    - V0.1
+    - main
     
 jobs:
   
@@ -17,11 +17,16 @@ jobs:
           host: ${{ secrets.HOST }}
           key: ${{ secrets.SSH_KEY }}
           command: |
-            
-            rm -Rfv tg_monitoring
-            git clone https://github.com/mtvy/tg_monitoring.git
-            
-            cd tg_monitoring
+          
+            if [ -d ./tg_welcome_bot ]; then 
+              cd tg_welcome_bot
+              docker-compose down
+              git pull
+            else
+              git clone https://github.com/mtvy/tg_welcome_bot.git
+              cd tg_welcome_bot
+              pip install -r setup/requirements.txt
+              echo "{{ secrets.TOKEN }}" > setup/config.py
             
             docker-compose up -d --build
             

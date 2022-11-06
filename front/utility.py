@@ -16,7 +16,8 @@ from telebot.types import Message, KeyboardButton as KbButton, \
                           InlineKeyboardMarkup as inlineKb   , \
                           InlineKeyboardButton as inlineButton
 #------------------------\ project modules /-------------------------#
-from back import get_db, logging
+from back import get_db
+import exclog
 #\------------------------------------------------------------------/#
 
 
@@ -33,7 +34,7 @@ def set_kb(btns : List[str]) -> replyKb:
 
 
 #\------------------------------------------------------------------/#
-@logging()
+@exclog.logging()
 def set_inline_kb(btns : Dict[str, str]) -> None:
     """
     Making inline keyboard
@@ -46,14 +47,14 @@ def set_inline_kb(btns : Dict[str, str]) -> None:
 
 
 #\------------------------------------------------------------------/#
-@logging()
+@exclog.logging()
 def get_ids(tb='groups_tb') -> Tuple[int]:
     return (it[3] for it in get_db(tb))
 #\------------------------------------------------------------------/#
 
 
 #\------------------------------------------------------------------/#
-@logging()
+@exclog.logging()
 def get_info(_id : str, tb='groups_tb') -> Tuple[str]:
     for it in get_db(tb):
         if it[3] == _id:
@@ -63,7 +64,7 @@ def get_info(_id : str, tb='groups_tb') -> Tuple[str]:
 
 
 #\------------------------------------------------------------------/#
-@logging()
+@exclog.logging()
 def get_date() -> str:
     now = datetime.now()
     return f'{now.year}-{now.month}-{now.day}'
@@ -71,21 +72,21 @@ def get_date() -> str:
 
 
 #\------------------------------------------------------------------/#
-@logging()
+@exclog.logging()
 def del_msg(bot : TeleBot, sender_id : int, _msg_id : int) -> None:
     bot.delete_message(sender_id, _msg_id); return True
 #\------------------------------------------------------------------/#
 
 
 #\------------------------------------------------------------------/#
-@logging()
+@exclog.logging()
 def edit_msg(bot : TeleBot, sender_id : int, _msg_id : int, txt : str, mrkp) -> None:
     bot.edit_message_text(sender_id, _msg_id, txt, reply_markup=mrkp); return True
 #\------------------------------------------------------------------/#
 
 
 #\------------------------------------------------------------------/#
-@logging()
+@exclog.logging()
 def wait_msg(bot : TeleBot, _id : str | int, func : Callable, txt : str, mrkp : replyKb | inlineKb | rmvKb=None, args=[], **_) -> None:
     """
     Replacement for register_next_step_handler.
@@ -117,7 +118,7 @@ def wait_msg(bot : TeleBot, _id : str | int, func : Callable, txt : str, mrkp : 
 
 
 #\------------------------------------------------------------------/#
-@logging()
+@exclog.logging()
 def send_msg(bot : TeleBot, _id : str | int, txt : str, mrkp : replyKb | inlineKb | rmvKb=None, *args, **_) -> Message:
     """
     Replacement for send_message.

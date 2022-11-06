@@ -12,17 +12,17 @@ from typing       import Any, Callable, Dict, List, Tuple
 from json         import dump as _dump
 from psycopg2     import connect as connect_db
 
+import exclog
+
 if __name__ == "__main__": 
-    from utility import logging
     from vars    import *
 else: 
-    from back import logging
     from back.vars import *
 #\------------------------------------------------------------------/#
 
 
 #\------------------------------------------------------------------/#
-@logging()
+@exclog.logging()
 def __connect(conn_kwrgs=CONN_ADRGS) -> Tuple[Any, Any]:
     """This definition returns connection to database."""
     return connect_db(**conn_kwrgs)
@@ -30,7 +30,7 @@ def __connect(conn_kwrgs=CONN_ADRGS) -> Tuple[Any, Any]:
 
 
 #\------------------------------------------------------------------/#
-@logging()
+@exclog.logging()
 def push_msg(msg : str, conn_kwrgs=CONN_ADRGS) -> Any | bool:
     """This definition sends message to database."""
     con = __connect(conn_kwrgs); cur = con.cursor()
@@ -68,21 +68,14 @@ def delete_db(cnd : str, _tb : str) -> str | bool:
 
 
 #\------------------------------------------------------------------/#
-@logging()
+@exclog.logging()
 def __dump_tables(_write : Callable[[str], None], _tb : str, _fl : str, **_) -> None:
     _dump(get_db(_tb), open(_fl, 'w')); _write(f'[DUMP][True]\n')
 #\------------------------------------------------------------------/#    
 
 
-#\------------------------------------------------------------------/#
-@logging()
-def __load_tables(_write : Callable[[str], None], _tb : str, _fl : str, _) -> None:
-    ...
 #\------------------------------------------------------------------/# 
-
-
-#\------------------------------------------------------------------/# 
-@logging()
+@exclog.logging()
 def __cr_database(_write : Callable[[str], None], _db : str, _usr : str, _psswrd : str, _p_con : Dict[str, str], **_) -> None:
     _write(f'[CR_DB_{_db}][{push_msg(f"CREATE DATABASE {_db}")}]', _p_con)
     _write(f'[CR_USR_{_usr}][{push_msg(f"CREATE USER {_usr} WITH ENCRYPTED PASSWORD {_psswrd}")}]', _p_con)
@@ -91,7 +84,7 @@ def __cr_database(_write : Callable[[str], None], _db : str, _usr : str, _psswrd
 
 
 #\------------------------------------------------------------------/# 
-@logging()
+@exclog.logging()
 def __cr_tables(_write : Callable[[str], None], _ctbs : str, **_) -> None:
     for _tb, ind in zip(_ctbs, range(len(_ctbs))): _write(f'[DB{ind+1}][{bool(push_msg(_tb))}]\n')
 #\------------------------------------------------------------------/#
@@ -112,7 +105,6 @@ if __name__ == "__main__":
    
     DB_CNTRL = {
         '-s' : __dump_tables,
-        '-l' : __load_tables,
         '-d' : __cr_database,
         '-c' : __cr_tables,
         '-h' : __help_msg

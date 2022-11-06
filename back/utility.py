@@ -33,25 +33,6 @@ def saveLogs(txt : str, _f : str = LOG_FILE) -> int:
 
 
 #\------------------------------------------------------------------/#
-def logging(__write : Callable[[str], None]=print, __rtrn=False):
-    """ Logging decorator with args. """
-    
-    def _logging(func : Callable) -> Any | Literal[False]:
-        
-        def wrap_func(*args, **kwargs) -> Any | Literal[False]:
-            try:
-                return func(*args, **kwargs)
-            except:
-                __write(f"[{func.__name__}]-->{_exc()}")
-            return __rtrn
-
-        return wrap_func
-        
-    return _logging
-#\------------------------------------------------------------------/#
-
-
-#\------------------------------------------------------------------/#
 def openfileforRead(file = None, txt = '') -> str:
     return txt.join([i for i in _open(file, encoding='utf-8')])
 #\------------------------------------------------------------------/#
