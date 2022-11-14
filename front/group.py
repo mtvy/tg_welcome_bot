@@ -74,9 +74,11 @@ def del_group(bot : TeleBot, _id : str | int) -> None:
         else:
             send_msg(bot, _id, f'Группа {msg.text} не удалена.', set_kb(BOT_KB))
 
-    groups_kb = [it[3] for it in get_db('groups_tb')]
-    if groups_kb:
-        wait_msg(bot, _id, __del_group, DELETE_GROUP, set_kb(groups_kb), [bot, _id])
+    groups = get_db('groups_tb')
+    if groups:
+        groups_kb = [it[3] for it in groups]
+        if groups_kb:
+            wait_msg(bot, _id, __del_group, DELETE_GROUP, set_kb(groups_kb), [bot, _id])
     else:
         send_msg(bot, _id, f'Нет добавленных каналов.')
 
