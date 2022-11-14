@@ -16,6 +16,7 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           key: ${{ secrets.SSH_KEY }}
+          user: ${{ secrets.USER }}
           command: |
           
             if [ -d ./tg_welcome_bot ]; then 
@@ -26,7 +27,7 @@ jobs:
               git clone https://github.com/mtvy/tg_welcome_bot.git
               cd tg_welcome_bot
               pip install -r setup/requirements.txt
-              echo "{{ secrets.TOKEN }}" > setup/config.py
+              echo "{{ secrets.TOKEN }}" > setup/.env
             
             docker-compose up -d --build
             

@@ -64,7 +64,8 @@ def handle_mems() -> None:
         global exc
 
         try:
-            for grp in get_db('groups_tb'):
+            grps = get_db('groups_tb')
+            for grp in grps if grps else []:
                 if len(grp[3]) > 13:
                     l_len = int(grp[4])
                     try:

@@ -3,8 +3,8 @@ CONN_ADRGS = {
     'database' : 'groups' ,
     'password' : 'groups' ,
     'user'     : 'groups' ,
-    'host'     : 'localhost',
-    'port'     : '5432'     
+    'host'     : 'postgres',
+    'port'     : '5433'     
 }
 
 DBRESP = 'SELECT COUNT(1) FROM'

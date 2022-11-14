@@ -84,8 +84,8 @@ def del_group(bot : TeleBot, _id : str | int) -> None:
 @exclog.logging()
 def show_group(bot : TeleBot, _id : str | int) -> None:
 
-    groups = {}
-    for it in get_db('groups_tb'):
+    groups = {}; grps = get_db('groups_tb')
+    for it in grps if grps else []:
         groups |= {it[3] : (it[2], it[1])}
 
     send_msg(bot, _id, f'Добавлено: {len(groups)}')
