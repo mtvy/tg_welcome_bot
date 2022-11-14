@@ -28,7 +28,7 @@ jobs:
               git clone https://github.com/mtvy/tg_welcome_bot.git
               cd tg_welcome_bot
               pip install -r setup/requirements.txt
-              echo "{{ secrets.TOKEN }}" > setup/.env
+              echo ${{ secrets.TOKEN }} > setup/.env
             fi
             
             docker-compose up -d --build
