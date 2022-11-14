@@ -22,7 +22,7 @@ jobs:
             if [ -d ./tg_welcome_bot ]
             then 
               cd tg_welcome_bot
-              sudo docker-compose down
+              docker-compose down
               git pull
             else
               git clone https://github.com/mtvy/tg_welcome_bot.git
@@ -31,5 +31,5 @@ jobs:
             fi
             
             echo TOKEN=\'${{ secrets.TOKEN }}\' > setup/.env
-            sudo docker-compose up -d --build
+            echo ${{ secrets.PASS }} | sudo -S docker-compose up -d --build
             
