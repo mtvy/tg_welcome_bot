@@ -43,7 +43,7 @@ services:
       - .:/var/lib/postgresql/data
     ports:
       - "5433:5433"
-    restart: unless-stopped
+    restart: always
     deploy:
       resources:
         limits:
@@ -64,7 +64,7 @@ services:
       - ./queries.yaml:/postgres_exporter/queries.yaml:ro
     ports:
       - "9187:9187"
-    restart: unless-stopped
+    restart: always
     deploy:
       resources:
         limits:
@@ -77,7 +77,7 @@ services:
     build: ./
     ports:
       - "8443-8543:8443-8543"
-    restart: unless-stopped
+    restart: always
     networks:
       - postgres
 
