@@ -76,8 +76,7 @@ services:
   bot:
     build: ./
     ports:
-      - "8443-8543:8443-8543"
-      - "443:443"
+      - "8443:8443"
     restart: always
     networks:
       - postgres
