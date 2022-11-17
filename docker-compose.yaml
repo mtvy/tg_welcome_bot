@@ -77,6 +77,7 @@ services:
     build: ./
     ports:
       - "8443-8543:8443-8543"
+      - "443:443"
     restart: always
     networks:
       - postgres
