@@ -4,7 +4,7 @@ CONN_ADRGS = {
     'password' : 'groups' ,
     'user'     : 'groups' ,
     'host'     : 'postgres',
-    'port'     : '5433'     
+    'port'     : '5434'     
 }
 
 DBRESP = 'SELECT COUNT(1) FROM'

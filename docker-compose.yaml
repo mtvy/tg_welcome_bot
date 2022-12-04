@@ -32,7 +32,7 @@ services:
       - "pg_stat_statements.max=10000"
       - "-c"
       - "pg_stat_statements.track=all"
-      - -p 5433
+      - -p 5434
     environment:
       POSTGRES_DB: "groups"
       POSTGRES_USER: "groups"
@@ -42,7 +42,7 @@ services:
       - ./setup/database:/docker-entrypoint-initdb.d
       - .:/var/lib/postgresql/data
     ports:
-      - "5433:5433"
+      - "5434:5434"
     restart: always
     deploy:
       resources:
@@ -63,7 +63,7 @@ services:
     volumes:
       - ./queries.yaml:/postgres_exporter/queries.yaml:ro
     ports:
-      - "9187:9187"
+      - "9188:9188"
     restart: always
     deploy:
       resources:
@@ -76,7 +76,7 @@ services:
   bot:
     build: ./
     ports:
-      - "8443:8443"
+      - "8400-8443:8400-8443"
     restart: always
     networks:
       - postgres

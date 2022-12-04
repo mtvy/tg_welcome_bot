@@ -116,7 +116,7 @@ if __name__ == "__main__":
                      'user'     : 'postgres' , 
                      'password' : 'postgres' ,
                      'host'     : 'localhost',
-                     'port'     : '5433'     },
+                     'port'     : '5434'     },
         '_db'     : CONN_ADRGS['database'], 
         '_usr'    : CONN_ADRGS['user'], 
         '_psswrd' : CONN_ADRGS['password'],
