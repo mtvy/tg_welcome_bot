@@ -55,7 +55,7 @@ services:
       - default
     
   db-exporter:
-    container_name: grdb_exporter_cont    
+    container_name: db_exporter_cont    
     image: prometheuscommunity/postgres-exporter:v0.10.0
     environment:
       DATA_SOURCE_URI: "postgres:5434/groups?sslmode=disable"
@@ -65,7 +65,7 @@ services:
     volumes:
       - ./setup/queries.yaml:/postgres_exporter/queries.yaml:ro
     ports:
-      - "9187:9187"
+      - "9188:9188"
     restart: always
     deploy:
       resources:
