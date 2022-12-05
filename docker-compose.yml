@@ -74,7 +74,7 @@ services:
           memory: 500M
     networks:
       - default
-
+ 
   grafana:
     image: grafana/grafana
     user: root
