@@ -18,6 +18,7 @@ from setup import *
 
 import exclog, os
 
+from traceback import format_exc
 from dotenv import load_dotenv
 load_dotenv('./setup/.env')
 #\------------------------------------------------------------------/#
@@ -114,7 +115,10 @@ def callback_inline(call : CallbackQuery):
 
 #\==================================================================/#
 if __name__ == "__main__":
-    proc = init_proc(handle_mems, [])
-    start_proc(proc)
-    bot.polling(none_stop=True, allowed_updates="chat_member")
+    try:
+        proc = init_proc(handle_mems, [])
+        start_proc(proc)
+        bot.polling(allowed_updates="chat_member")
+    except:
+        print(f"Polling Error! {format_exc()}")
 #\==================================================================/#
