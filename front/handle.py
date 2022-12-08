@@ -43,7 +43,7 @@ def timer_msg(_id : str | int, txt : str) -> None:
     try:
         bot = TeleBot(TOKEN)
         msg = send_msg(bot, _id, txt)
-        sleep(15)
+        sleep(10)
         del_msg(bot, _id, msg.message_id)
     except:
         pass
@@ -71,12 +71,11 @@ def handle_mems() -> None:
                     try:
                         p_len = bot.get_chat_member_count(grp[3])
                     except:
-                        p_len = l_len
-                        send_msg(bot, 281321076, 'get_chat_member_count')
-                        p_len = l_len
                         sleep(5)
+                        send_msg(bot, 281321076, 'get_chat_member_count')
                         p_len = bot.get_chat_member_count(grp[3])
                         send_msg(bot, 281321076, f'{traceback.format_exc()}')
+                    
                     if l_len < p_len:
                         proc = init_proc(timer_msg, [grp[3], grp[2]])
                         start_proc(proc)
@@ -90,7 +89,7 @@ def handle_mems() -> None:
 
     bot = TeleBot(TOKEN)
 
-    set_delay(20).seconds.do(_send_req, bot)
+    set_delay(40).seconds.do(_send_req, bot)
         
     while not exc:
         proc_run()
